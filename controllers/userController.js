@@ -5,14 +5,9 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const {promisify} = require('util');
 
-// const JWT_SECRET = process.env.JWT_SECRET;
-// const JWT_COOKIE_EXPIRES_IN = process.env.JWT_COOKIE_EXPIRES_IN;
-// const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN;
-
-const JWT_SECRET = 'seeicarrymyhustleformyshoulderjejenimonloanirogunakoba';
-const JWT_COOKIE_EXPIRES_IN = '1';
-const JWT_EXPIRES_IN = '1d';
-
+const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_COOKIE_EXPIRES_IN = process.env.JWT_COOKIE_EXPIRES_IN;
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN;
 
 const signToken = (id) => {
   return jwt.sign({ id: id }, JWT_SECRET, {

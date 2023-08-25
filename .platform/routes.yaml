@@ -1,0 +1,8 @@
+# Each route describes how an incoming URL is going to be processed by Platform.sh.
+"https://www.{default}/api/v1/users":
+    type: upstream
+    upstream: "nodejs"
+
+"https://{default}/api/v1/tasks":
+    type: upstream
+    upstream: "nodejs"
