@@ -1,0 +1,4 @@
+{
+  "appService.defaultWebAppToDeploy": "/subscriptions/50cf2efc-e7a3-4b64-81a4-2dc9d5c07ebb/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/crust-task",
+  "appService.deploySubpath": "."
+}
