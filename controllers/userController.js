@@ -15,7 +15,7 @@ const signToken = (id) => {
   });
 };
 
-const createSignedToken = (user, res) => {
+exports.createSignedToken = (user, res) => {
   const token = signToken(user.id);
 
   const cookieOptions = {
@@ -91,7 +91,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     });
   });
 
-  const token = createSignedToken(user, res);
+  const token = this.createSignedToken(user, res);
 
   res.status(200).json({
     status: 'success',
@@ -117,7 +117,7 @@ exports.login = catchAsync(async (req, res, next) => {
 
   if(!matchedPassword) return next(new AppError('Incorrect login credentials, try again', 400));
 
-  const token = createSignedToken(user, res);
+  const token = this.createSignedToken(user, res);
 
   user.password = undefined;
 
