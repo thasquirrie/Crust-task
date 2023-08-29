@@ -52,7 +52,7 @@ exports.getUsers = catchAsync(async (req, res, next) => {
 
 exports.getUser = catchAsync(async (req, res, next) => {  
   const {id} = req.user;
-  const response = await pool.query('SELECT * FROM users WHERE id = $1', [
+  const response = await pool.query('SELECT id, username, email FROM users WHERE id = $1', [
     id,
   ]);
 
@@ -129,7 +129,7 @@ exports.login = catchAsync(async (req, res, next) => {
     }
   })
 
-})
+});
 
 exports.protect = catchAsync(async (req, res, next) => {
   let token = '';
