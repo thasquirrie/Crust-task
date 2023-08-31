@@ -18,7 +18,7 @@ async function createTasksSchema() {
     `);
 
     await client.query('COMMIT'); // Commit the transaction
-    console.log('Texts schema created successfully.');
+    console.log('Tasks schema created successfully.');
   } catch (error) {
     await client.query('ROLLBACK'); // Rollback the transaction on error
     console.error('Error creating tasks schema:', error);

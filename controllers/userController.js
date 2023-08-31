@@ -69,7 +69,7 @@ exports.getUser = catchAsync(async (req, res, next) => {
 });
 
 exports.signup = catchAsync(async (req, res, next) => {
-  let { username, email, password, confirm_password } = req.body;
+  let { username, email, password, confirm_password, first_name, last_name } = req.body;
 
   if (password !== confirm_password)
     return next(new AppError('Passwords does not match', 400));
@@ -78,9 +78,9 @@ exports.signup = catchAsync(async (req, res, next) => {
   confirm_password = '';
 
   const insertQuery =
-    'INSERT INTO users (username, email, password, confirm_password) VALUES ($1, $2, $3, $4) RETURNING id, username, email';
+    'INSERT INTO users (username, email, password, first_name, last_name) VALUES ($1, $2, $3, $4, $5) RETURNING id, username, email, first_name, last_name';
 
-  const values = [username, email, hashedPassword, confirm_password];
+  const values = [username, email, hashedPassword, first_name, last_name];
 
   const user = await new Promise((resolve, reject) => {
     pool.query(insertQuery, values, (error, result) => {
@@ -106,7 +106,7 @@ exports.login = catchAsync(async (req, res, next) => {
   const {email, password} = req.body;
 
   const user = await new Promise((resolve, reject) => {
-    pool.query('SELECT id, email, password, username FROM users WHERE email = $1', [email], (error, result) => {
+    pool.query('SELECT id, email, password, username, first_name, last_name FROM users WHERE email = $1', [email], (error, result) => {
       if (error) return next(new AppError(error, 400));
 
       resolve(result.rows[0]);

@@ -7,8 +7,8 @@ const handleCastErrorDB = (err) => {
 
 const handleDuplicateField = (err) => {
   // console.log({ err });
-  const value = err.errmsg.match(/(["'])(\\?.)*?\1/)[0];
-  const message = `Duplicate field value: ${value}. Please use another value`;
+  const value = err.message.match(/(["'])(\\?.)*?\1/)[0];
+  const message = `Email already exist. Please use another value`;
   return new AppError(message, 400);
 };
 
@@ -30,6 +30,7 @@ const handleJWTExpiredError = () => {
 
 const sendErrorDev = (err, req, res) => {
   console.log('Url:', req.originalUrl);
+  console.log(err.message);
   if (req.originalUrl.startsWith('/api')) {
     res.status(err.statusCode).json({
       status: err.status,
@@ -81,8 +82,7 @@ module.exports = (err, req, res, next) => {
   err.status = err.status || 'error';
   if (err.name === 'TokenExpiredError') err = handleJWTExpiredError();
   if (err.name === 'JsonWebTokenError') err = handleJWTError();
-  if (err.code === '23505') {
-    console.log('Code:', err.code);
+  if (err.message.includes('duplicate key')) {
     err = handleDuplicateField(err);
   }
   if (err.name === 'CastError') err = handleCastErrorDB(err);

@@ -22,11 +22,13 @@ const Strategy = new GoogleStrategy(
     
     const username = `${account.given_name.toLowerCase()}_${account.family_name.toLowerCase()}`;
     const password = '';
-    const confirm_password = '';
+    const first_name = account.given_name;
+    const last_name = account.family_name;
 
-    const selectQuery = `SELECT username, email, id FROM users WHERE email=$1`;
+
+    const selectQuery = `SELECT username, email, id, first_name, last_name FROM users WHERE email=$1`;
     const insertQuery =
-      'INSERT INTO users (username, email, password, confirm_password) VALUES ($1, $2, $3, $4) RETURNING id, username, email';
+      'INSERT INTO users (username, email, password, first_name, last_name) VALUES ($1, $2, $3, $4, $5) RETURNING id, username, email, first_name, last_name';
 
     const userQuery = await pool.query(selectQuery, [account.email]);
     console.log('Query:', userQuery.rows);
@@ -35,7 +37,7 @@ const Strategy = new GoogleStrategy(
       // Insert user into database
       pool.query(
         insertQuery,
-        [username, account.email, password, confirm_password],
+        [username, account.email, password, first_name, last_name],
         (error, result) => {
           if (error) return next(new AppError(error, 400));
 

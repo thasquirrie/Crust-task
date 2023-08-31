@@ -77,7 +77,7 @@ exports.getTask = catchAsync(async (req, res, next) => {
   if (!task) return next(new AppError('Task not found or you do not have authorization to view the task', 404));
 
   res.status(200).json({
-    status: 'sucess',
+    status: 'success',
     data: {
       task,
     },
@@ -88,19 +88,14 @@ exports.updateTask = catchAsync(async (req, res, next) => {
   const { id: user_id } = req.user;
   const { id } = req.params;
 
-  console.log({user_id, id})
+  console.log({user_id, id});
 
   const fieldsToUpdate = Object.keys(req.body);
-  const clauses = fieldsToUpdate
-    .map((fields, index) => `${fields} = $${index + 3}`)
-    .join(', ');
-
+  const clauses = fieldsToUpdate.map((fields, index) => `${fields} = $${index + 3}`).join(', ');
+  
   console.log({ clauses });
 
-  const updateQuery = `UPDATE tasks 
-  SET ${clauses}
-  WHERE id = $1 AND user_id = $2
-  RETURNING *`;
+  const updateQuery = `UPDATE tasks SET ${clauses} WHERE id = $1 AND user_id = $2 RETURNING *`;
 
   const task = await new Promise((resolve, reject) => {
     pool.query(
@@ -142,12 +137,10 @@ exports.deleteTask = catchAsync(async (req, res, next) => {
 
   console.log({ task });
 
-  if (!task) return next(new AppError('Task not found', 404));
+  if (!task) return next(new AppError('Task not found or you do not have permission to delete this task.', 404));
 
   res.status(200).json({
     status: 'success',
     message: 'Task deleted successfully',
   });
 });
-
-

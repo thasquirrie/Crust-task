@@ -1,7 +1,7 @@
 const pool = require('./db');
 const catchAsync = require('./middlewares/catchAsync');
 
-console.log({pool});
+// console.log({pool});
 
 async function createUserSchema() {
   const client = await pool.connect();
@@ -13,10 +13,12 @@ async function createUserSchema() {
     await client.query(`
     CREATE TABLE IF NOT EXISTS users (
       id SERIAL PRIMARY KEY,
-      email TEXT UNIQUE NOT NULL,
-      username TEXT NOT NULL,
+      email VARCHAR(100) UNIQUE NOT NULL,
+      username VARCHAR(30) NOT NULL,
       password TEXT NOT NULL,
-      confirm_password TEXT NOT NULL
+      confirm_password TEXT,
+      first_name VARCHAR(100) NOT NULL,
+      last_name VARCHAR(100) NOT NULL
       )
     `);
 

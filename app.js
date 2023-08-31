@@ -16,7 +16,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({}));
 
 const userRouter = require('./routes/userRoutes');
 const taskRouter = require('./routes/taskRoutes');
